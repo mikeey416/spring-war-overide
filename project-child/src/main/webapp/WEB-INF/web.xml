@@ -1,0 +1,55 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Child Web Application</display-name>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      <!-- avoid files with names [servlet-name]-servlet.xml (e.g. dsmngr-servlet.xml). Otherwise context and all beans get instantiated twice-->
+      /WEB-INF/application-context.xml
+      /WEB-INF/mvc-context.xml
+    </param-value>
+  </context-param>
+
+  <filter>
+    <filter-name>requestContextFilter</filter-name>
+    <filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>requestContextFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+  <servlet>
+    <servlet-name>child</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <!-- Explicitly clear contextConfigLocation. Otherwise looks for file [servlet-name]-servlet.xml -->
+      <param-name>contextConfigLocation</param-name>
+      <param-value></param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+    <multipart-config>
+      <max-file-size>1000000</max-file-size>
+      <max-request-size>1100000</max-request-size>
+      <file-size-threshold>10000000</file-size-threshold> <!-- never store -->
+    </multipart-config>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>child</servlet-name>
+    <url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

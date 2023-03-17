@@ -13,8 +13,8 @@ public class ChildController extends MasterController {
         return "Child message";
     }
 
-    @GetMapping(path = "main.html")
+    @GetMapping(path = "main/main.html")
     public ModelAndView main() {
-        return new ModelAndView("main");
+        return new ModelAndView("main/main");
     }
 }
